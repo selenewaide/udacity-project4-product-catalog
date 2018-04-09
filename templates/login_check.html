@@ -1,0 +1,21 @@
+{% extends "header_footer.html" %}
+{% block content %}
+
+<div class="main-log">
+  <div class="card text-center log-card">
+    <div class="card-body">
+      <h3 class="text-center">
+        You need to be logged in to make any changes.
+    </h3>
+    <a href="{{url_for('login')}}" class="btn btn-outline-success">
+        Login
+    </a>
+    <a href="{{url_for('categories_list')}}" class="btn btn-outline-secondary">
+        Cancel
+    </a>
+  </div>
+</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,120 @@
+/*
+* Globals
+*/
+form {
+  margin: 0;
+  padding: 0;
+}
+
+hr {
+  border: .05rem solid #e5e5e5;
+  width: 90%;
+}
+
+
+/*
+* Navbar.
+*/
+.navbar {
+    border-bottom: .05rem solid #e5e5e5;
+}
+
+.nav-btn-container {
+    position: absolute;
+    right: 20px;
+}
+
+.nav-btn {
+  margin-left: 1rem;
+}
+
+.nav-btn a {
+  color: white;
+}
+
+
+/*
+* Override Bootstrap's default container.
+*/
+.container {
+    max-width: 50rem;
+}
+
+.main-contents {
+    margin: 3rem auto;
+}
+
+.card-block {
+    width: 100%;
+}
+
+
+/*
+ * Login / Logout pages
+ */
+ .main-log {
+  height: 65%;
+  display: flex;
+ }
+
+.log-card {
+  margin: auto;
+  padding: 3rem;
+  border: 0;
+}
+
+.log-card .card-body h5 {
+  margin-bottom: 2rem;
+}
+
+
+
+/*
+ * Form Pages
+ */
+.form-page {
+  height: 60vh;
+}
+
+.form-delete {
+  display: flex;
+}
+
+.form-delete-contents {
+  margin: auto;
+}
+
+
+
+/*
+ * Product List Page
+ */
+.menu-item-btn {
+  margin: auto auto 0 1rem;
+}
+
+
+.form-footer {
+  text-align: center;
+}
+
+.form-footer button {
+  margin: 1rem;
+}
+
+
+/*
+ * Footer
+ */
+.catalog-footer {
+  padding: 2.5rem 0;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: .05rem solid #e5e5e5;
+}
+
+.catalog-footer p:last-child {
+  margin-bottom: 0;
+}
+

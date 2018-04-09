@@ -1,0 +1,43 @@
+{% extends "header_footer.html" %}
+{% block content %}
+
+ <form action="{{ url_for('products_new', category_id=category_id)}}" method='POST'>
+
+<div class="form-page">
+    <div class="card-block form-contents">
+      <h1 class="text-center">Add New Product</h1>
+
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" class="form-control" name='name' placeholder="Product Name">
+        </div>
+
+        <div class="form-group">
+          <label>Product Description</label>
+          <textarea class="form-control" name='description' rows="3">
+          </textarea>
+          <small class="form-text text-muted">
+            Enter a short description for the product.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Product Price</label>
+          <input type="number" class="form-control" name='price' placeholder="Product Price" step="0.01">
+        </div>
+
+    </div>
+</div>
+
+<div class="card-footer form-footer">
+
+    <button type="submit" class="btn btn-outline-success">Add</button>
+
+    <a href="{{url_for('products_list', category_id=category_id)}}" class="btn btn-outline-secondary">
+        Cancel
+    </a>
+</div>
+
+</form>
+
+{% endblock %}

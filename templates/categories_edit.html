@@ -1,0 +1,36 @@
+{% extends "header_footer.html" %}
+{% block content %}
+
+ <form action="{{url_for('categories_edit', category_id = category.id)}}" method="POST">
+
+<div class="form-page">
+    <div class="card-block form-contents">
+      <h1 class="text-center">Edit Category</h1>
+
+        <div class="form-group">
+          <label>Category Name</label>
+          <input type="text" class="form-control" name='name' placeholder='{{category.name}}'>
+        </div>
+
+        <div class="form-group">
+          <label>Category Description</label>
+          <textarea class="form-control" name='description' rows="3">
+          </textarea>
+          <small class="form-text text-muted">
+            Enter a short description for the category.
+          </small>
+        </div>
+
+    </div>
+</div>
+
+<div class="card-footer form-footer">
+    <button type="submit" class="btn btn-outline-warning">Edit</button>
+    <a href="{{url_for('categories_list')}}" class="btn btn-outline-secondary">
+        Cancel
+    </a>
+</div>
+
+</form>
+
+{% endblock %}

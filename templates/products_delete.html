@@ -1,0 +1,28 @@
+{% extends "header_footer.html" %}
+{% block content %}
+
+ <form action="{{url_for('products_delete', category_id=category_id, product_id=product.id)}}"
+        method='POST'>
+
+
+<div class="form-page form-delete">
+    <div class="card-block form-contents form-delete-contents">
+      <h1 class="text-center">Delete {{product.name}}!</h1>
+    <h3 class="text-center">
+        Are you sure you want to delete this product?
+    </h3>
+    </div>
+</div>
+
+<div class="card-footer form-footer">
+    <button type="submit" class="btn btn-outline-danger">Delete</button>
+
+    <a href="{{url_for('products_list', category_id = category_id)}}" class="btn btn-outline-secondary">
+        Cancel
+    </a>
+</div>
+
+</form>
+
+{% endblock %}
+

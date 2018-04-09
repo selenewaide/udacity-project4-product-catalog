@@ -1,0 +1,40 @@
+{% extends "header_footer.html" %}
+{% block content %}
+
+<div class="card-block">
+    <h1>{{category.name}} Category - Product List</h1>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a class="btn btn-outline-primary" href = "{{url_for('products_new', category_id=category.id) }}">
+        Create New Product
+    </a>
+</div>
+
+<hr>
+
+<div class="card-block">
+<ul class="list-group list-group-flush">
+
+{% for product in products %}
+    <li class="list-group-item">
+        <div class="card-block">
+            <h4 class="card-title">{{ product.name }}</h4>
+            <p class="card-text">{{ product.description }}</p>
+            <p class="card-text">€{{ product.price }}</p>
+        </div>
+
+        <div class="menu-item-btn">
+            <a class="btn btn-outline-warning" href="{{url_for('products_edit', category_id=category.id, product_id=product.id)}}">Edit</a>
+
+            <a class="btn btn-outline-danger" href="{{url_for('products_delete', category_id=category.id, product_id=product.id)}}">Delete</a>
+
+            <a class="btn btn-outline-secondary" href="{{url_for('products_api', category_id=category.id, product_id=product.id)}}">API</a>
+        </div>
+    </li>
+{% endfor %}
+</ul>
+</div>
+
+{% endblock %}
+
+
+
