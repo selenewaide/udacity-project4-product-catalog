@@ -27,18 +27,21 @@ These instructions will get you a copy of the project.
 
 
 ### Google Developer Console
-* Create a web application project and obtain client ID for the app. Download the json file and save it as client_secret.json (this file is currently blank)
+* Create a web application project and obtain client ID for the app. Download the json file and save it as client_secret.json in the same location as the app.py file.
 * Go to Google Drive API - ensure it is enabled 
 
 ### Install & Run
 
 ###### Step 1
-Clone the project from [Github Movie Search Project.](https://github.com/selenewaide/sw1-movie-search.git)
+Clone the project from [udacity-project4-product-catalog.](https://github.com/selenewaide/udacity-project4-product-catalog.git)
 ```
-git clone https://github.com/selenewaide/sw1-movie-search.git
+git clone https://github.com/selenewaide/udacity-project4-product-catalog.git
 ```
 
 ###### Step 2
+Ensure that the client_secret.json file has been saved in - see Google Developer Console section above.
+
+###### Step 3
 Run the app.py file to render the website.
 ```
 python app.py
