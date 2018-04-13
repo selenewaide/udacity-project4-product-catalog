@@ -18,6 +18,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     description = Column(String(250))
+    user = Column(String(250))
 
 
 class Product(Base):
@@ -32,6 +33,7 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship(Category)
     created = Column(DateTime, default=datetime.datetime.utcnow)
+    user = Column(String(250))
 
     @property
     def serialize(self):
@@ -41,7 +43,8 @@ class Product(Base):
             'name': self.name,
             'description': self.description,
             'price': self.price,
-            'category_id': self.category_id
+            'category_id': self.category_id,
+            'user': self.user
         }
 
 

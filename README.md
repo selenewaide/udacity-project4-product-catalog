@@ -14,6 +14,7 @@ These instructions will get you a copy of the project.
 ### Prerequisites
 
 * Python 2.7
+* PyJWT
 * flask - render_template, request, redirect, jsonify, url_for
 * sqlalchemy - create_engine
 * sqlalchemy.orm - sessionmaker

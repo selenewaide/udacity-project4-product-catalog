@@ -11,6 +11,7 @@ import requests
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 
+import jwt
 
 # This variable specifies the name of a file that contains the OAuth 2.0
 # information for this application, including its client_id and client_secret.
@@ -18,7 +19,7 @@ CLIENT_SECRETS_FILE = "client_secret.json"
 
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly']
+SCOPES = ['openid email']
 API_SERVICE_NAME = 'drive'
 API_VERSION = 'v2'
 
@@ -33,10 +34,14 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+google_user_id = ""
+
 
 @app.route('/login')
 def login():
     """Google login."""
+    global google_user_id
+
     if 'credentials' not in flask.session:
         return flask.redirect('authorize')
 
@@ -47,12 +52,17 @@ def login():
     # Save credentials back to session in case access token was refreshed.
     flask.session['credentials'] = credentials_to_dict(credentials)
 
+    user_details = jwt.decode(
+        flask.session['credentials']['id_token'], verify=False)
+
+    google_user_id = user_details['email']
+
     return render_template('login.html')
 
 
 @app.route('/authorize')
 def authorize():
-    """Create flow instance to manage the OAuth 2 Authorization Grant Flow steps."""
+    """Create flow instance to manage the OAuth 2 Auth Grant Flow steps."""
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         CLIENT_SECRETS_FILE, scopes=SCOPES)
 
@@ -135,7 +145,8 @@ def credentials_to_dict(credentials):
             'token_uri': credentials.token_uri,
             'client_id': credentials.client_id,
             'client_secret': credentials.client_secret,
-            'scopes': credentials.scopes}
+            'scopes': credentials.scopes,
+            'id_token': credentials.id_token}
 
 
 # ---------------------------------------------------
@@ -161,12 +172,18 @@ def categories_list():
 @app.route('/categories/new', methods=['GET', 'POST'])
 def categories_new():
     """Add a new category."""
+    global google_user_id
+
     if 'credentials' not in flask.session:
         return render_template('login_check.html')
 
     if request.method == 'POST':
+        if google_user_id != "":
+            user = google_user_id
+
         category_new = Category(name=request.form['name'],
-                                description=request.form['description'])
+                                description=request.form['description'],
+                                user=user)
         session.add(category_new)
         session.commit()
         return redirect(url_for('categories_list'))
@@ -177,10 +194,19 @@ def categories_new():
 @app.route('/categories/<int:category_id>/edit', methods=['GET', 'POST'])
 def categories_edit(category_id):
     """Edit a category."""
+    global google_user_id
+
     if 'credentials' not in flask.session:
         return render_template('login_check.html')
 
     category_edit = session.query(Category).filter_by(id=category_id).one()
+
+    category_edit_dict = category_edit.__dict__
+    user_db = category_edit_dict['user']
+
+    if google_user_id != user_db:
+        return render_template("message.html")
+
     if request.method == 'POST':
         if request.form['name']:
             category_edit.name = request.form['name']
@@ -198,10 +224,18 @@ def categories_edit(category_id):
 @app.route('/categories/<int:category_id>/delete', methods=['GET', 'POST'])
 def categories_delete(category_id):
     """Delete a category."""
+    global google_user_id
+
     if 'credentials' not in flask.session:
         return render_template('login_check.html')
 
     category_delete = session.query(Category).filter_by(id=category_id).one()
+
+    category_delete_dict = category_delete.__dict__
+    user_db = category_delete_dict['user']
+
+    if google_user_id != user_db:
+        return render_template("message.html")
 
     if request.method == 'POST':
         session.delete(category_delete)
@@ -225,31 +259,46 @@ def products_list(category_id):
 @app.route('/products/<int:category_id>/new', methods=['GET', 'POST'])
 def products_new(category_id):
     """Add a new product to a category."""
+    global google_user_id
+
     if 'credentials' not in flask.session:
         return render_template('login_check.html')
 
     if request.method == 'POST':
+        if google_user_id != "":
+            user = google_user_id
+
         product_new = Product(name=request.form['name'],
                               description=request.form['description'],
                               price=request.form['price'],
-                              category_id=category_id)
+                              category_id=category_id,
+                              user=user)
         session.add(product_new)
         session.commit()
         return redirect(url_for('products_list', category_id=category_id))
     else:
-        return render_template('products_new.html', category_id=category_id)
+        return render_template('products_new.html',
+                               category_id=category_id)
 
 
 @app.route('/products/<int:category_id>/<int:product_id>/edit',
            methods=['GET', 'POST'])
 def products_edit(category_id, product_id):
     """Edit a product."""
+    global google_user_id
+
     if 'credentials' not in flask.session:
         return render_template('login_check.html')
 
     product_edit = session.query(Product).filter_by(
         id=product_id,
         category_id=category_id).one()
+
+    product_edit_dict = product_edit.__dict__
+    user_db = product_edit_dict['user']
+
+    if google_user_id != user_db:
+        return render_template("message.html")
 
     if request.method == 'POST':
         if request.form['name']:
@@ -274,12 +323,20 @@ def products_edit(category_id, product_id):
            methods=['GET', 'POST'])
 def products_delete(category_id, product_id):
     """Delete a product."""
+    global google_user_id
+
     if 'credentials' not in flask.session:
         return render_template('login_check.html')
 
     product_delete = session.query(Product).filter_by(
         id=product_id,
         category_id=category_id).one()
+
+    product_delete_dict = product_delete.__dict__
+    user_db = product_delete_dict['user']
+
+    if google_user_id != user_db:
+        return render_template("message.html")
 
     if request.method == 'POST':
         session.delete(product_delete)
