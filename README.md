@@ -1,6 +1,6 @@
 # Product Catalog Website
 
-This project renders multiple web pages with CRUD and Google OAuth2. The root route displays a list of product categories. Each of theses categories has a list of products that can be displayed by clicking on the "Product List" button. Uses can add new categories and products, edit them and delete them. However, to make changes, uses must be logged in - using Google login.
+This project renders multiple web pages with CRUD and Google OAuth2. The root route displays a list of product categories. Each of theses categories has a list of products that can be displayed by clicking on the "Product List" button. Users can add new categories and products, edit them and delete them. However, to make changes, users must be logged in - using Google login.
 
 ## Table of Contents
 1. Getting Started
